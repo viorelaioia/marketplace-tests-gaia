@@ -1,0 +1,1 @@
+Marketplace UI tests that will run on Firefox OS using gaia-ui-tests and marionette
