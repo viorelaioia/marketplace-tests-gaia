@@ -12,7 +12,7 @@ except (OSError, IOError):
 deps = ['gaiatest']
 
 setup(name='marketplacetests',
-      version='1.1',
+      version='1.0',
       description="Gaia UI test for Marketplace",
       long_description=description,
       classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
