@@ -4,8 +4,9 @@
 
 from marionette.by import By
 from gaiatest import GaiaTestCase
-from marketplacetests.marketplace.app import Marketplace
 from gaiatest.apps.homescreen.app import Homescreen
+
+from marketplaceapp.app import Marketplace
 
 
 class TestSearchMarketplaceAndInstallApp(GaiaTestCase):

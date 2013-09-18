@@ -4,7 +4,7 @@
 
 import re
 from gaiatest import GaiaTestCase
-from marketplacetests.marketplace.app import Marketplace
+from marketplaceapp.app import Marketplace
 
 
 class TestSearchMarketplacePaidApp(GaiaTestCase):

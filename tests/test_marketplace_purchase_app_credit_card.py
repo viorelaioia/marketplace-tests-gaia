@@ -3,9 +3,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import time
+
 from gaiatest import GaiaTestCase
-from marketplacetests.marketplace.app import Marketplace
 from gaiatest.mocks.persona_test_user import PersonaTestUser
+
+from marketplaceapp.app import Marketplace
 
 
 class TestMarketplacePurchaseAppCreditCard(GaiaTestCase):

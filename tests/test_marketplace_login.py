@@ -3,14 +3,14 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from gaiatest import GaiaTestCase
-from marketplacetests.marketplace.app import Marketplace
 from gaiatest.mocks.persona_test_user import PersonaTestUser
 
+from marketplaceapp.app import Marketplace
 
-class TestMarketplaceFeedback(GaiaTestCase):
+
+class TestMarketplaceLogin(GaiaTestCase):
+
     MARKETPLACE_DEV_NAME = 'Marketplace Dev'
-    feedback_submitted_message = u'Feedback submitted. Thanks!'
-    test_comment = 'This is a test comment.'
 
     def setUp(self):
         GaiaTestCase.setUp(self)
@@ -20,33 +20,30 @@ class TestMarketplaceFeedback(GaiaTestCase):
         self.user = PersonaTestUser().create_user(verified=True,
                                                   env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
 
-    def test_marketplace_feedback_user(self):
-        # launch marketplace dev and go to marketplace
         self.marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         self.marketplace.launch()
 
-        # wait for settings button to come out
+    def test_login_marketplace(self):
+        # https://moztrap.mozilla.org/manage/case/4134/
+
         self.marketplace.wait_for_setting_displayed()
         settings = self.marketplace.tap_settings()
-
-        # sign in with persona
         persona = settings.tap_sign_in()
+
         persona.login(self.user.email, self.user.password)
 
         # switch back to Marketplace
         self.marionette.switch_to_frame()
         self.marketplace.launch()
 
-        # go to feedback tab
-        self.marketplace.select_setting_feedback()
+        # wait for signed-in notification at the bottom of the screen to clear
+        self.marketplace.wait_for_notification_message_not_displayed()
 
-        # enter and submit your feedback
-        self.marketplace.enter_feedback(self.test_comment)
-        self.marketplace.submit_feedback()
+        # Verify that user is logged in
+        self.assertEqual(self.user.email, settings.email)
 
-        # catch the notification
-        self.marketplace.wait_for_notification_message_displayed()
-        message_content = self.marketplace.notification_message
+        # Sign out, which should return to the Marketplace home screen
+        settings.tap_sign_out()
 
-        # verify if the notification is right
-        self.assertEqual(message_content, self.feedback_submitted_message)
+        # Verify that user is signed out
+        settings.wait_for_sign_in_displayed()

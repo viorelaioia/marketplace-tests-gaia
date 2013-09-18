@@ -25,7 +25,7 @@ class Settings(Base):
 
     def tap_back(self):
         self.marionette.find_element(*self._back_button_locator).tap()
-        from marketplacetests.marketplace.app import Marketplace
+        from marketplaceapp.app import Marketplace
         return Marketplace(self.marionette)
 
     def wait_for_sign_in_displayed(self):

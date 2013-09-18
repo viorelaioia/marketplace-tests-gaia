@@ -3,8 +3,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from gaiatest import GaiaTestCase
-from marketplacetests.marketplace.app import Marketplace
 from gaiatest.mocks.persona_test_user import PersonaTestUser
+
+from marketplaceapp.app import Marketplace
 
 
 class TestMarketplaceChangeRegionLogin(GaiaTestCase):
@@ -27,7 +28,7 @@ class TestMarketplaceChangeRegionLogin(GaiaTestCase):
         marketplace = Marketplace(self.marionette, 'Marketplace Dev')
         marketplace.launch()
 
-        # login to marketplace
+        # login to marketplaceapp
         settings = marketplace.login(self.user)
 
         # change region

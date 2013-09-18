@@ -8,7 +8,7 @@ import random
 from gaiatest import GaiaTestCase
 from gaiatest.mocks.persona_test_user import PersonaTestUser
 
-from marketplacetests.marketplace.app import Marketplace
+from marketplaceapp.app import Marketplace
 
 
 class TestMarketplaceAddReview(GaiaTestCase):

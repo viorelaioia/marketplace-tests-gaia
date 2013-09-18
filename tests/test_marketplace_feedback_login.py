@@ -3,7 +3,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from gaiatest import GaiaTestCase
-from marketplacetests.marketplace.app import Marketplace
+from gaiatest.mocks.persona_test_user import PersonaTestUser
+
+from marketplaceapp.app import Marketplace
 
 
 class TestMarketplaceFeedback(GaiaTestCase):
@@ -16,14 +18,27 @@ class TestMarketplaceFeedback(GaiaTestCase):
         self.connect_to_network()
         self.install_marketplace()
 
-    def test_marketplace_feedback_anonymous(self):
-        # launch marketplace dev and go to marketplace
+        self.user = PersonaTestUser().create_user(verified=True,
+                                                  env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
+
+    def test_marketplace_feedback_user(self):
+        # launch marketplaceapp dev and go to marketplaceapp
         self.marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         self.marketplace.launch()
 
         # wait for settings button to come out
         self.marketplace.wait_for_setting_displayed()
         settings = self.marketplace.tap_settings()
+
+        # sign in with persona
+        persona = settings.tap_sign_in()
+        persona.login(self.user.email, self.user.password)
+
+        # switch back to Marketplace
+        self.marionette.switch_to_frame()
+        self.marketplace.launch()
+
+        # go to feedback tab
         self.marketplace.select_setting_feedback()
 
         # enter and submit your feedback
