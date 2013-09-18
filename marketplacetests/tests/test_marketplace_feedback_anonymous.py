@@ -3,7 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from gaiatest import GaiaTestCase
-from gaiatest.apps.marketplace.app import Marketplace
+from marketplacetests.marketplace.app import Marketplace
 
 
 class TestMarketplaceFeedback(GaiaTestCase):

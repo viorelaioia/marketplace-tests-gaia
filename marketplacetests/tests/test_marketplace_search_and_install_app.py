@@ -4,7 +4,7 @@
 
 from marionette.by import By
 from gaiatest import GaiaTestCase
-from gaiatest.apps.marketplace.app import Marketplace
+from marketplacetests.marketplace.app import Marketplace
 from gaiatest.apps.homescreen.app import Homescreen
 
 
