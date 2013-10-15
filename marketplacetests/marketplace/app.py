@@ -16,8 +16,8 @@ class Marketplace(Base):
 
     _gallery_apps_locator = (By.CSS_SELECTOR, '#gallery .app')
     _loading_fragment_locator = (By.CSS_SELECTOR, 'div.loading-fragment')
-    _error_title_locator = (By.CSS_SELECTOR, 'div.modal-dialog-message-container > h3.title')
-    _error_message_locator = (By.CSS_SELECTOR, 'div.modal-dialog-message-container .message')
+    _error_title_locator = (By.ID, 'et_netOffline')
+    _error_message_locator = (By.ID, 'errorShortDescText')
     _settings_button_locator = (By.CSS_SELECTOR, 'a.header-button.settings')
     _home_button_locator = (By.CSS_SELECTOR, 'h1.site a')
     _back_button_locator = (By.ID, 'nav-back')
@@ -73,7 +73,6 @@ class Marketplace(Base):
         return [Result(self.marionette, app) for app in self.marionette.find_elements(*self._gallery_apps_locator)]
 
     def search(self, term):
-        self.wait_for_element_displayed(*self._search_locator)
         search_box = self.marionette.find_element(*self._search_locator)
 
         # search for the app

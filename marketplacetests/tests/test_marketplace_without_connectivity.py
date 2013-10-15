@@ -10,8 +10,8 @@ class TestMarketplaceWithoutConnectivity(GaiaTestCase):
 
     MARKETPLACE_DEV_NAME = 'Marketplace Dev'
 
-    expected_error_title = u'Network connection unavailable'
-    expected_error_message = u'Marketplace Dev requires a network connection. Try connecting to a Wi-Fi or mobile data network.'
+    expected_error_title = u'Offline mode'
+    expected_error_message = u"Firefox is currently in offline mode and can't browse the Web."
 
     def setUp(self):
         GaiaTestCase.setUp(self)
@@ -30,8 +30,6 @@ class TestMarketplaceWithoutConnectivity(GaiaTestCase):
     def test_marketplace_without_connectivity(self):
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
-
-        self.marionette.switch_to_frame()
 
         self.assertEqual(marketplace.error_title_text, self.expected_error_title)
         self.assertEqual(marketplace.error_message_text, self.expected_error_message)
