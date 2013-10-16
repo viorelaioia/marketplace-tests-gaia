@@ -59,8 +59,15 @@ class Result(PageRegion):
     def tap_app(self):
         app_name = self.marionette.find_element(*self._name_locator)
         app_name.tap()
-        from gaiatest.apps.marketplace.regions.app_details import Details
+        from marketplacetests.marketplace.regions.app_details import Details
         return Details(self.marionette)
+
+    def tap_purchase_button(self):
+        self.root_element.find_element(*self._install_button_locator).tap()
+        # Return Bango payment object
+
+        from marketplacetests.bango.app import Bango
+        return Bango(self.marionette)
 
 
 class FilterResults(Base):

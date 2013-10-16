@@ -59,7 +59,7 @@ class TestMarketplacePurchaseAppOnDevWithMockedBango(GaiaTestCase):
         marketplace.wait_for_notification_message_not_displayed()
 
         # search for a paid app and tap on the price
-        search = marketplace.search(self._APP_NAME)
+        search = marketplace.search('Bag of Dice')
         bango = search.search_results[0].tap_purchase_button()
 
         # pay app

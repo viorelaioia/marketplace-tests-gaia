@@ -69,7 +69,7 @@ class Marketplace(Base):
     @property
     def popular_apps(self):
         self.show_popular_apps()
-        from gaiatest.apps.marketplace.regions.search_results import Result
+        from marketplacetests.marketplace.regions.search_results import Result
         return [Result(self.marionette, app) for app in self.marionette.find_elements(*self._gallery_apps_locator)]
 
     def search(self, term):
@@ -77,8 +77,9 @@ class Marketplace(Base):
 
         # search for the app
         search_box.send_keys(term)
+
         search_box.send_keys(Keys.RETURN)
-        from gaiatest.apps.marketplace.regions.search_results import SearchResults
+        from marketplacetests.marketplace.regions.search_results import SearchResults
         return SearchResults(self.marionette)
 
     def show_popular_apps(self):
@@ -87,7 +88,7 @@ class Marketplace(Base):
 
     def tap_settings(self):
         self.marionette.find_element(*self._settings_button_locator).tap()
-        from gaiatest.apps.marketplace.regions.settings import Settings
+        from marketplacetests.marketplace.regions.settings import Settings
         return Settings(self.marionette)
 
     def tap_home(self):
