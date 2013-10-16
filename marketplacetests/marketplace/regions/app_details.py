@@ -35,5 +35,5 @@ class Details(Base):
         # element.tap() isn't working here
         # Bug 878750 - el.tap() and click() do not work on "Write a review" button
         write_review_button.tap()
-        from gaiatest.apps.marketplace.regions.review_box import AddReview
+        from marketplacetests.marketplace.regions.review_box import AddReview
         return AddReview(self.marionette)
