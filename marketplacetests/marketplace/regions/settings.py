@@ -40,10 +40,7 @@ class Settings(Base):
         self.wait_for_element_displayed(*self._sign_out_button_locator)
 
     def tap_sign_out(self):
-        sign_out_button = self.marionette.find_element(*self._sign_out_button_locator)
-        # TODO: remove scrollIntoView hack
-        self.marionette.execute_script("arguments[0].scrollIntoView(false);", [sign_out_button])
-        sign_out_button.tap()
+        self.marionette.find_element(*self._sign_out_button_locator).tap()
 
     def select_region(self, region):
         self.marionette.find_element(*self._region_select_locator).tap()
