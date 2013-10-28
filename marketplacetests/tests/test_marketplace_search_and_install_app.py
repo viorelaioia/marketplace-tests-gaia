@@ -44,6 +44,9 @@ class TestSearchMarketplaceAndInstallApp(GaiaTestCase):
         self.confirm_installation()
         self.APP_INSTALLED = True
 
+        # Press Home button
+        self.marionette.execute_script("window.wrappedJSObject.dispatchEvent(new Event('home'));")
+
         # Check that the icon of the app is on the homescreen
         homescreen = Homescreen(self.marionette)
         homescreen.switch_to_homescreen_frame()
@@ -57,7 +60,6 @@ class TestSearchMarketplaceAndInstallApp(GaiaTestCase):
         self.wait_for_element_not_displayed(*self._yes_button_locator)
 
     def tearDown(self):
-
         if self.APP_INSTALLED:
             self.apps.uninstall(self.app_name)
 
