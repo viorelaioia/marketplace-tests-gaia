@@ -10,7 +10,7 @@ from gaiatest.mocks.persona_test_user import PersonaTestUser
 
 class TestMarketplacePurchaseAppOnDevWithMockedBango(GaiaTestCase):
 
-    _APP_NAME = 'Private Yacht'
+    _APP_NAME = 'Bag of Dice'
     _app_icon_locator = ('xpath', "//li[@class='icon']//span[text()='%s']" % _APP_NAME)
 
     _homescreen_iframe_locator = ('css selector', 'div.homescreen iframe')
@@ -59,7 +59,7 @@ class TestMarketplacePurchaseAppOnDevWithMockedBango(GaiaTestCase):
         marketplace.wait_for_notification_message_not_displayed()
 
         # search for a paid app and tap on the price
-        search = marketplace.search('Bag of Dice')
+        search = marketplace.search(self._APP_NAME)
         bango = search.search_results[0].tap_purchase_button()
 
         # pay app
