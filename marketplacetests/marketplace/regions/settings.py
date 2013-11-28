@@ -21,7 +21,7 @@ class Settings(Base):
 
     def __init__(self, marionette):
         Base.__init__(self, marionette)
-        self.wait_for_element_displayed(*self._save_locator)
+        self.wait_for_element_displayed(*self._sign_in_button_locator)
 
     def tap_back(self):
         self.marionette.find_element(*self._back_button_locator).tap()
