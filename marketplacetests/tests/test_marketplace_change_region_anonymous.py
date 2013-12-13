@@ -2,19 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from gaiatest import GaiaTestCase
+from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 
 
-class TestMarketplaceChangeRegionAnonymous(GaiaTestCase):
+class TestMarketplaceChangeRegionAnonymous(MarketplaceGaiaTestCase):
 
     _REGION = 'Spain'
-
-    def setUp(self):
-        GaiaTestCase.setUp(self)
-
-        self.connect_to_network()
-        self.install_marketplace()
 
     def test_marketplace_change_region_anonymous(self):
 

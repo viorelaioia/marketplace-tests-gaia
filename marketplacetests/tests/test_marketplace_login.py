@@ -2,20 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from gaiatest import GaiaTestCase
+from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from gaiatest.mocks.persona_test_user import PersonaTestUser
 
 from marketplacetests.marketplace.app import Marketplace
 
 
-class TestMarketplaceLogin(GaiaTestCase):
+class TestMarketplaceLogin(MarketplaceGaiaTestCase):
 
     MARKETPLACE_DEV_NAME = 'Marketplace Dev'
 
     def setUp(self):
-        GaiaTestCase.setUp(self)
-        self.connect_to_network()
-        self.install_marketplace()
+        MarketplaceGaiaTestCase.setUp(self)
 
         self.user = PersonaTestUser().create_user(verified=True,
                                                   env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
