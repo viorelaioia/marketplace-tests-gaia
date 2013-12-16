@@ -5,18 +5,16 @@
 import time
 import random
 
-from gaiatest import GaiaTestCase
+from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from gaiatest.mocks.persona_test_user import PersonaTestUser
 
 from marketplacetests.marketplace.app import Marketplace
 
 
-class TestMarketplaceAddReview(GaiaTestCase):
+class TestMarketplaceAddReview(MarketplaceGaiaTestCase):
 
     def setUp(self):
-        GaiaTestCase.setUp(self)
-        self.connect_to_network()
-        self.install_marketplace()
+        MarketplaceGaiaTestCase.setUp(self)
 
         self.user = PersonaTestUser().create_user(verified=True,
                                                   env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})

@@ -2,19 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from gaiatest import GaiaTestCase
+from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 
 
-class TestMarketplaceFeedback(GaiaTestCase):
+class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
     MARKETPLACE_DEV_NAME = 'Marketplace Dev'
     feedback_submitted_message = u'Feedback submitted. Thanks!'
     test_comment = 'This is a test comment.'
-
-    def setUp(self):
-        GaiaTestCase.setUp(self)
-        self.connect_to_network()
-        self.install_marketplace()
 
     def test_marketplace_feedback_anonymous(self):
         # launch marketplace dev and go to marketplace

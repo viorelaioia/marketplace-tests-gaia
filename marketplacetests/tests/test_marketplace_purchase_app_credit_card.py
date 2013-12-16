@@ -3,12 +3,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import time
-from gaiatest import GaiaTestCase
+from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 from gaiatest.mocks.persona_test_user import PersonaTestUser
 
 
-class TestMarketplacePurchaseAppCreditCard(GaiaTestCase):
+class TestMarketplacePurchaseAppCreditCard(MarketplaceGaiaTestCase):
 
     _APP_NAME = 'Bag of Dice'
     _app_icon_locator = ('xpath', "//li[@class='icon']//span[text()='%s']" % _APP_NAME)
@@ -16,13 +16,10 @@ class TestMarketplacePurchaseAppCreditCard(GaiaTestCase):
     _homescreen_iframe_locator = ('css selector', 'div.homescreen iframe')
 
     def setUp(self):
-        GaiaTestCase.setUp(self)
+        MarketplaceGaiaTestCase.setUp(self)
 
         if self.apps.is_app_installed(self._APP_NAME):
             self.apps.uninstall(self._APP_NAME)
-
-        self.data_layer.connect_to_wifi()
-        self.install_marketplace()
 
         # generate unverified PersonaTestUser account
         self.user = PersonaTestUser().create_user(verified=True, env={

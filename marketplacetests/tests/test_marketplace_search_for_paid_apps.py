@@ -3,18 +3,13 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
-from gaiatest import GaiaTestCase
+from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 
 
-class TestSearchMarketplacePaidApp(GaiaTestCase):
+class TestSearchMarketplacePaidApp(MarketplaceGaiaTestCase):
 
     # System app confirmation button to confirm installing an app
-
-    def setUp(self):
-        GaiaTestCase.setUp(self)
-        self.connect_to_network()
-        self.install_marketplace()
 
     def test_search_paid_app(self):
         marketplace = Marketplace(self.marionette, 'Marketplace Dev')
@@ -33,6 +28,3 @@ class TestSearchMarketplacePaidApp(GaiaTestCase):
         for result in results.search_results:
             self.assertTrue(re.match('^\$\d+\.\d{2}', result.price),
                             "App %s it's not a paid app." % result.name)
-
-    def tearDown(self):
-        GaiaTestCase.tearDown(self)

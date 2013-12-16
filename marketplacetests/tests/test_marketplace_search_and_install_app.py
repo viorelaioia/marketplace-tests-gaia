@@ -3,12 +3,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from marionette.by import By
-from gaiatest import GaiaTestCase
+from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 from gaiatest.apps.homescreen.app import Homescreen
 
 
-class TestSearchMarketplaceAndInstallApp(GaiaTestCase):
+class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
 
     MARKETPLACE_DEV_NAME = 'Marketplace Dev'
 
@@ -16,11 +16,6 @@ class TestSearchMarketplaceAndInstallApp(GaiaTestCase):
 
     # System app confirmation button to confirm installing an app
     _yes_button_locator = (By.ID, 'app-install-install-button')
-
-    def setUp(self):
-        GaiaTestCase.setUp(self)
-        self.connect_to_network()
-        self.install_marketplace()
 
     def test_search_and_install_app(self):
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
@@ -63,4 +58,4 @@ class TestSearchMarketplaceAndInstallApp(GaiaTestCase):
         if self.APP_INSTALLED:
             self.apps.uninstall(self.app_name)
 
-        GaiaTestCase.tearDown(self)
+        MarketplaceGaiaTestCase.tearDown(self)
