@@ -44,7 +44,7 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
 
         # Check that the icon of the app is on the homescreen
         homescreen = Homescreen(self.marionette)
-        homescreen.switch_to_homescreen_frame()
+        self.apps.switch_to_displayed_app()
 
         self.assertTrue(homescreen.is_app_installed(self.app_name))
 
