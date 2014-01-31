@@ -17,6 +17,9 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
     # System app confirmation button to confirm installing an app
     _yes_button_locator = (By.ID, 'app-install-install-button')
 
+    # System app notification install message
+    _notification_install_locator = (By.CSS_SELECTOR, '#system-banner > p')
+
     def test_search_and_install_app(self):
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
@@ -37,6 +40,7 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
 
         first_result.tap_install_button()
         self.confirm_installation()
+        self.assertEqual('%s installed' %self.app_name, self.notification_message, self.notification_message)
         self.APP_INSTALLED = True
 
         # Press Home button
@@ -47,6 +51,11 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
         self.apps.switch_to_displayed_app()
 
         self.assertTrue(homescreen.is_app_installed(self.app_name))
+
+    @property
+    def notification_message(self):
+        self.wait_for_element_displayed(*self._notification_install_locator)
+        return self.marionette.find_element(*self._notification_install_locator).text
 
     def confirm_installation(self):
         # TODO add this to the system app object when we have one
