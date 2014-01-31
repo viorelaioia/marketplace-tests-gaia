@@ -9,13 +9,13 @@ except (OSError, IOError):
     description = ''
 
 # dependencies
-deps = ['gaiatest']
+deps = ['gaiatest==0.21.3']
 
 setup(name='marketplacetests',
       version='1.0',
       description="Gaia UI test for Marketplace",
       long_description=description,
-      classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='mozilla',
       author='WebQA Team and contributors',
       author_email='gaia-ui-automation@mozilla.org',
@@ -25,4 +25,3 @@ setup(name='marketplacetests',
       install_requires=deps,
       include_package_data=True,
       )
-
