@@ -68,13 +68,6 @@ class Result(PageRegion):
         from marketplacetests.marketplace.regions.app_details import Details
         return Details(self.marionette)
 
-    def tap_purchase_button(self):
-        self.root_element.find_element(*self._install_button_locator).tap()
-        # Return Bango payment object
-
-        from marketplacetests.bango.app import Bango
-        return Bango(self.marionette)
-
 
 class FilterResults(Base):
 

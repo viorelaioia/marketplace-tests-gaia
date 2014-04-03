@@ -44,3 +44,10 @@ class Details(Base):
         write_review_button.tap()
         from marketplacetests.marketplace.regions.review_box import AddReview
         return AddReview(self.marionette)
+
+    def tap_purchase_button(self):
+        self.marionette.find_element(*self._install_button_locator).tap()
+        # Return payment object
+
+        from marketplacetests.payment.app import Payment
+        return Payment(self.marionette)
