@@ -15,6 +15,8 @@ class TestSearchMarketplacePaidApp(MarketplaceGaiaTestCase):
         marketplace = Marketplace(self.marionette, 'Marketplace Dev')
         marketplace.launch()
 
+        marketplace.set_region('United States')
+
         search_results = marketplace.search(APP_NAME).search_results
 
         self.assertGreater(len(search_results), 0, 'No results found.')
