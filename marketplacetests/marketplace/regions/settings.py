@@ -15,8 +15,6 @@ class Settings(Base):
     _sign_in_button_locator = (By.CSS_SELECTOR, 'a.button.persona')
     _sign_out_button_locator = (By.CSS_SELECTOR, 'a.button.logout')
     _back_button_locator = (By.ID, 'nav-back')
-    _region_select_locator = (By.ID, 'region')
-    _region_select_value_locator = (By.CSS_SELECTOR, '#region option[selected]')
     _save_changes_button_locator = (By.XPATH, "//section[@id='account-settings']//button[text()='Save Changes']")
 
     def __init__(self, marionette):
@@ -42,16 +40,8 @@ class Settings(Base):
     def tap_sign_out(self):
         self.marionette.find_element(*self._sign_out_button_locator).tap()
 
-    def select_region(self, region):
-        self.marionette.find_element(*self._region_select_locator).tap()
-        self.select(region)
-
     def tap_save_changes(self):
         self.marionette.find_element(*self._save_changes_button_locator).tap()
-
-    @property
-    def region(self):
-        return self.marionette.find_element(*self._region_select_value_locator).text
 
     @property
     def email(self):

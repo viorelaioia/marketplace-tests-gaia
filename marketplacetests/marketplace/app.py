@@ -82,6 +82,19 @@ class Marketplace(Base):
         from marketplacetests.marketplace.regions.search_results import SearchResults
         return SearchResults(self.marionette)
 
+    def set_region(self, region):
+        # go to the :debug page
+        search_box = self.marionette.find_element(*self._search_locator)
+        search_box.send_keys(':debug')
+        search_box.send_keys(Keys.RETURN)
+
+        from marketplacetests.marketplace.regions.debug import Debug
+        debug_screen = Debug(self.marionette)
+        debug_screen.select_region(region)
+        # wait for notification of the change
+        self.wait_for_notification_message_displayed()
+        debug_screen.tap_back()
+
     def show_popular_apps(self):
         self.marionette.find_element(*self._popular_apps_tab_locator).tap()
         self.wait_for_condition(lambda m: 'active' in m.find_element(*self._popular_apps_tab_locator).get_attribute('class'))

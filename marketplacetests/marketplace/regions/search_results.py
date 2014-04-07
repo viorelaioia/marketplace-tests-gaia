@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import re
+
 from marionette.by import By
 from gaiatest.apps.base import Base
 from gaiatest.apps.base import PageRegion
@@ -34,7 +36,7 @@ class Result(PageRegion):
     _name_locator = (By.CSS_SELECTOR, '.info > h3')
     _author_locator = (By.CSS_SELECTOR, '.info .author')
     _install_button_locator = (By.CSS_SELECTOR, '.button.product.install')
-    _price_locator = (By.CSS_SELECTOR, '.premium.button.product')
+    _price_locator = (By.CSS_SELECTOR, '.info .price')
 
     @property
     def name(self):
@@ -54,10 +56,14 @@ class Result(PageRegion):
 
     @property
     def price(self):
-        return self.root_element.find_element(*self._price_locator).text
+        # TODO: Remove this hack once bug https://bugzilla.mozilla.org/show_bug.cgi?id=985508 has been fixed
+        price_match = re.search('\$\d+\.\d{2}', self.root_element.text)
+        if price_match:
+                return price_match.group()
+        return 'Free'
 
     def tap_app(self):
-        app_name = self.marionette.find_element(*self._name_locator)
+        app_name = self.root_element.find_element(*self._name_locator)
         app_name.tap()
         from marketplacetests.marketplace.regions.app_details import Details
         return Details(self.marionette)
