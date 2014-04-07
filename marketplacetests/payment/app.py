@@ -63,3 +63,4 @@ class Payment(Base):
         self.marionette.find_element(*self._buy_button_locator).tap()
         self.marionette.switch_to_frame()
         self.wait_for_element_not_present(*self._payment_frame_locator)
+        self.marionette.switch_to_frame()
