@@ -48,6 +48,16 @@ class Marketplace(Base):
         Base.launch(self, launch_timeout=120000)
         self.wait_for_element_not_displayed(*self._loading_fragment_locator)
 
+    def login(self, user):
+
+        settings = self.tap_settings()
+        persona = settings.tap_sign_in()
+        persona.login(user.email, user.password)
+        self.marionette.switch_to_frame()
+        self.launch()
+        settings.wait_for_sign_out_button()
+        return settings
+
     @property
     def error_title_text(self):
         return self.marionette.find_element(*self._error_title_locator).text
@@ -93,7 +103,20 @@ class Marketplace(Base):
         debug_screen.select_region(region)
         # wait for notification of the change
         self.wait_for_notification_message_displayed()
+        if region not in self.notification_message:
+            raise Exception('Unable to change region to %s. Notification displayed: %s'
+                            % (region, self.notification_message))
+
         debug_screen.tap_back()
+
+    def navigate_to_app(self, app_name):
+        search_results = self.search(app_name).search_results
+        for result in search_results:
+            if result.name == app_name:
+                return result.tap_app()
+
+        # app not found
+        raise Exception('The app: %s was not found.' % app_name)
 
     def show_popular_apps(self):
         self.marionette.find_element(*self._popular_apps_tab_locator).tap()
@@ -109,23 +132,6 @@ class Marketplace(Base):
 
     def tap_back(self):
         self.marionette.find_element(*self._back_button_locator).tap()
-
-    def login(self, user):
-        # Tap settings and sign in in Marketplace
-        settings = self.tap_settings()
-        persona = settings.tap_sign_in()
-
-        # login with PersonaTestUser account
-        persona.login(user.email, user.password)
-
-        # switch back to Marketplace
-        self.marionette.switch_to_frame()
-        self.launch()
-
-        # wait for the page to refresh and the sign out button to be visible
-        settings.wait_for_sign_out_button()
-
-        return settings
 
     def wait_for_setting_displayed(self):
         self.wait_for_element_displayed(*self._settings_button_locator)
