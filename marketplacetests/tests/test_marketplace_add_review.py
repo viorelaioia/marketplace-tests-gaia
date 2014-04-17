@@ -13,37 +13,20 @@ from marketplacetests.marketplace.app import Marketplace
 
 class TestMarketplaceAddReview(MarketplaceGaiaTestCase):
 
-    def setUp(self):
-        MarketplaceGaiaTestCase.setUp(self)
-
-        self.user = PersonaTestUser().create_user(verified=True,
-                                                  env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
-
     def test_add_review(self):
+        APP_NAME = 'SoundCloud'
+        user = PersonaTestUser().create_user(verified=True,
+                                                  env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
 
         marketplace = Marketplace(self.marionette, 'Marketplace dev')
         marketplace.launch()
+        marketplace.login(user)
+        details_page = marketplace.navigate_to_app(APP_NAME)
 
-        # Sign in
-        settings = marketplace.tap_settings()
-        persona = settings.tap_sign_in()
-        persona.login(self.user.email, self.user.password)
-
-        self.marionette.switch_to_frame()
-        marketplace.launch()
-        settings.wait_for_sign_out_button()
-
-        # Search and select app
-        results = marketplace.search('SoundCloud')
-        self.assertGreater(len(results.search_results), 0, 'No results found.')
-        details_page = results.search_results[0].tap_app()
-
-        # Setting your default values for review
         current_time = str(time.time()).split('.')[0]
         rating = random.randint(1, 5)
         body = 'This is a test %s' % current_time
 
-        # Adding the review
         review_box = details_page.tap_write_review()
         review_box.write_a_review(rating, body)
 

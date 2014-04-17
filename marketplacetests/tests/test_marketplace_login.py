@@ -35,6 +35,7 @@ class TestMarketplaceLogin(MarketplaceGaiaTestCase):
         self.marketplace.launch()
 
         # wait for signed-in notification at the bottom of the screen to clear
+        settings.wait_for_sign_out_button()
         self.marketplace.wait_for_notification_message_not_displayed()
 
         # Verify that user is logged in

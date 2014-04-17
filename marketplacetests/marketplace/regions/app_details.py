@@ -37,17 +37,15 @@ class Details(Base):
         return int(self.marionette.find_element(*self._first_review_locator).get_attribute('class')[-1])
 
     def tap_write_review(self):
-        self.wait_for_element_present(*self._write_review_locator)
-        write_review_button = self.marionette.find_element(*self._write_review_locator)
-        # element.tap() isn't working here
-        # Bug 878750 - el.tap() and click() do not work on "Write a review" button
-        write_review_button.tap()
+        self.wait_for_element_displayed(*self._write_review_locator)
+        self.marionette.find_element(*self._write_review_locator).tap()
         from marketplacetests.marketplace.regions.review_box import AddReview
         return AddReview(self.marionette)
 
     def tap_purchase_button(self):
+        self.wait_for_element_displayed(*self._install_button_locator)
         self.marionette.find_element(*self._install_button_locator).tap()
-        # Return payment object
 
+        # Return payment object
         from marketplacetests.payment.app import Payment
         return Payment(self.marionette)

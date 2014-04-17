@@ -12,39 +12,25 @@ class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
     feedback_submitted_message = u'Feedback submitted. Thanks!'
     test_comment = 'This is a test comment.'
 
-    def setUp(self):
-        MarketplaceGaiaTestCase.setUp(self)
-
-        self.user = PersonaTestUser().create_user(verified=True,
-                                                  env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
-
     def test_marketplace_feedback_user(self):
         # launch marketplace dev and go to marketplace
-        self.marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
-        self.marketplace.launch()
+        marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
+        marketplace.launch()
 
-        # wait for settings button to come out
-        self.marketplace.wait_for_setting_displayed()
-        settings = self.marketplace.tap_settings()
-
-        # sign in with persona
-        persona = settings.tap_sign_in()
-        persona.login(self.user.email, self.user.password)
-
-        # switch back to Marketplace
-        self.marionette.switch_to_frame()
-        self.marketplace.launch()
+        user = PersonaTestUser().create_user(verified=True,
+                                             env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
+        marketplace.login(user)
 
         # go to feedback tab
-        self.marketplace.select_setting_feedback()
+        marketplace.select_setting_feedback()
 
         # enter and submit your feedback
-        self.marketplace.enter_feedback(self.test_comment)
-        self.marketplace.submit_feedback()
+        marketplace.enter_feedback(self.test_comment)
+        marketplace.submit_feedback()
 
         # catch the notification
-        self.marketplace.wait_for_notification_message_displayed()
-        message_content = self.marketplace.notification_message
+        marketplace.wait_for_notification_message_displayed()
+        message_content = marketplace.notification_message
 
         # verify if the notification is right
         self.assertEqual(message_content, self.feedback_submitted_message)

@@ -17,8 +17,6 @@ class Debug(Base):
 
     def tap_back(self):
         self.marionette.find_element(*self._back_button_locator).tap()
-        from marketplacetests.marketplace.app import Marketplace
-        return Marketplace(self.marionette)
 
     def select_region(self, region):
         self.marionette.find_element(*self._region_select_locator).tap()

@@ -6,7 +6,7 @@ from marionette.by import By
 from gaiatest.apps.base import Base
 
 
-class AddReview(Base, dict):
+class AddReview(Base):
     """
     Page for adding reviews.
     """
@@ -16,9 +16,9 @@ class AddReview(Base, dict):
     _review_box_locator = (By.CSS_SELECTOR, '.add-review-form')
     _rating_locator = (By.CSS_SELECTOR, ".ratingwidget.stars-0 > label[data-stars='%s']")
 
-    def __init__(self, marionette, **kwargs):
+    def __init__(self, marionette):
         Base.__init__(self, marionette)
-        self.wait_for_element_present(*self._review_box_locator)
+        self.wait_for_element_displayed(*self._review_box_locator)
 
     def set_review_rating(self, rating):
         self.marionette.find_element(self._rating_locator[0], self._rating_locator[1] % rating).tap()
