@@ -46,6 +46,7 @@ class Marketplace(Base):
     def launch(self):
         Base.launch(self, launch_timeout=120000)
         self.wait_for_element_not_displayed(*self._loading_fragment_locator)
+        self.wait_for_element_displayed(*self._search_locator)
 
     def login(self, user):
 
