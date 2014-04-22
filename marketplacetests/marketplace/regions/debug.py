@@ -5,8 +5,10 @@
 from marionette.by import By
 from gaiatest.apps.base import Base
 
+from marketplacetests.marketplace.app import Marketplace
 
-class Debug(Base):
+
+class Debug(Marketplace):
 
     _back_button_locator = (By.ID, 'nav-back')
     _region_select_locator = (By.ID, 'region')
@@ -21,3 +23,4 @@ class Debug(Base):
     def select_region(self, region):
         self.marionette.find_element(*self._region_select_locator).tap()
         self.select(region)
+        self.switch_to_marketplace_frame()

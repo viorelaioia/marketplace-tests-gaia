@@ -15,7 +15,9 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
         self.install_certs()
         self.connect_to_network()
         self.wait_for_element_not_displayed('id', 'os-logo')
-        self.install_marketplace()
+
+        # Use this to override the Marketplace app version
+        self.MARKETPLACE_DEV_NAME = 'Dev'
 
     def install_certs(self):
         """ Install the marketplace-dev certs and set the pref required """
@@ -29,15 +31,3 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
                                   destination='data/b2g/mozilla/%s/%s' % (profile_folder, file_name))
         self.data_layer.set_char_pref('dom.mozApps.signed_apps_installable_from',
                                       'https://marketplace-dev.allizom.org,https://marketplace.firefox.com')
-
-    def install_marketplace(self):
-        _yes_button_locator = (By.ID, 'app-install-install-button')
-
-        if not self.apps.is_app_installed('Marketplace Dev'):
-            # install the marketplace dev app
-            self.marionette.execute_script('navigator.mozApps.install("https://marketplace-dev.allizom.org/manifest.webapp")')
-
-            # TODO add this to the system app object when we have one
-            self.wait_for_element_displayed(*_yes_button_locator)
-            self.marionette.find_element(*_yes_button_locator).tap()
-            self.wait_for_element_not_displayed(*_yes_button_locator)

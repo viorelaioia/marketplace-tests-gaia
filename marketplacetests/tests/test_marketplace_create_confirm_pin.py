@@ -21,7 +21,7 @@ class TestMarketplaceCreateConfirmPin(MarketplaceGaiaTestCase):
         user = PersonaTestUser().create_user(verified=True,
                                              env={"browserid": "firefoxos.persona.org",
                                                   "verifier": "marketplace-dev.allizom.org"})
-        marketplace = Marketplace(self.marionette, 'Marketplace Dev')
+        marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
 
         marketplace.login(user)

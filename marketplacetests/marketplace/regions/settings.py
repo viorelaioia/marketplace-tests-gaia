@@ -8,8 +8,6 @@ from gaiatest.apps.base import Base
 
 class Settings(Base):
 
-    name = 'Marketplace Dev'
-
     _email_account_field_locator = (By.ID, 'email')
     _save_locator = (By.CSS_SELECTOR, 'footer > p > button')
     _sign_in_button_locator = (By.CSS_SELECTOR, 'a.button.persona')

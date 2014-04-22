@@ -8,10 +8,7 @@ from marketplacetests.marketplace.app import Marketplace
 
 class TestMarketplaceWithoutConnectivity(MarketplaceGaiaTestCase):
 
-    MARKETPLACE_DEV_NAME = 'Marketplace Dev'
-
-    expected_error_title = u'Network connection unavailable'
-    expected_error_message = u'Marketplace Dev requires a network connection. Try connecting to a Wi-Fi or mobile data network.'
+    offline_error_message = u'Sorry, you need to be online to access the Marketplace.'
 
     def setUp(self):
         MarketplaceGaiaTestCase.setUp(self)
@@ -26,9 +23,7 @@ class TestMarketplaceWithoutConnectivity(MarketplaceGaiaTestCase):
 
     def test_marketplace_without_connectivity(self):
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
-        marketplace.launch()
+        marketplace.launch(False)
 
         self.apps.switch_to_displayed_app()
-
-        self.assertEqual(marketplace.error_title_text, self.expected_error_title)
-        self.assertEqual(marketplace.error_message_text, self.expected_error_message)
+        self.assertEqual(marketplace.offline_message_text, self.offline_error_message)

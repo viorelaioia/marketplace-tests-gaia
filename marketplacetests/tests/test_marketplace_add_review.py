@@ -16,9 +16,9 @@ class TestMarketplaceAddReview(MarketplaceGaiaTestCase):
     def test_add_review(self):
         APP_NAME = 'SoundCloud'
         user = PersonaTestUser().create_user(verified=True,
-                                                  env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
+                                             env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
 
-        marketplace = Marketplace(self.marionette, 'Marketplace dev')
+        marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
         marketplace.login(user)
         details_page = marketplace.navigate_to_app(APP_NAME)
