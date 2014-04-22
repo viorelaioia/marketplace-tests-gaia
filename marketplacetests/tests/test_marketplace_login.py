@@ -24,7 +24,6 @@ class TestMarketplaceLogin(MarketplaceGaiaTestCase):
     def test_login_marketplace(self):
         # https://moztrap.mozilla.org/manage/case/4134/
 
-        self.marketplace.wait_for_setting_displayed()
         settings = self.marketplace.tap_settings()
         persona = settings.tap_sign_in()
 

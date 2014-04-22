@@ -120,6 +120,7 @@ class Marketplace(Base):
         self.wait_for_condition(lambda m: 'active' in m.find_element(*self._popular_apps_tab_locator).get_attribute('class'))
 
     def tap_settings(self):
+        self.wait_for_element_displayed(*self._settings_button_locator)
         self.marionette.find_element(*self._settings_button_locator).tap()
         from marketplacetests.marketplace.regions.settings import Settings
         return Settings(self.marionette)
@@ -129,9 +130,6 @@ class Marketplace(Base):
 
     def tap_back(self):
         self.marionette.find_element(*self._back_button_locator).tap()
-
-    def wait_for_setting_displayed(self):
-        self.wait_for_element_displayed(*self._settings_button_locator)
 
     def select_setting_account(self):
         self.marionette.find_element(*self._account_tab_locator).tap()
