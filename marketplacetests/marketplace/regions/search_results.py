@@ -14,15 +14,10 @@ class SearchResults(Base):
     _search_results_area_locator = (By.ID, 'search-results')
     _search_results_loading_locator = (By.CSS_SELECTOR, 'div.loading')
     _search_result_locator = (By.CSS_SELECTOR, '#search-results li.item')
-    _filter_button_locator = (By.CSS_SELECTOR, '#site-header .header-button.filter')
 
     def __init__(self, marionette):
         Base.__init__(self, marionette)
         self.wait_for_element_not_present(*self._search_results_loading_locator)
-
-    def tap_filter(self):
-        self.marionette.find_element(*self._filter_button_locator).tap()
-        return FilterResults(self.marionette)
 
     @property
     def search_results(self):
@@ -36,7 +31,6 @@ class Result(PageRegion):
     _name_locator = (By.CSS_SELECTOR, '.info > h3')
     _author_locator = (By.CSS_SELECTOR, '.info .author')
     _install_button_locator = (By.CSS_SELECTOR, '.button.product.install')
-    _price_locator = (By.CSS_SELECTOR, '.info .price')
 
     @property
     def name(self):
@@ -54,36 +48,8 @@ class Result(PageRegion):
         self.root_element.find_element(*self._install_button_locator).tap()
         self.marionette.switch_to_frame()
 
-    @property
-    def price(self):
-        # TODO: Remove this hack once bug https://bugzilla.mozilla.org/show_bug.cgi?id=985508 has been fixed
-        price_match = re.search('\$\d+\.\d{2}', self.root_element.text)
-        if price_match:
-                return price_match.group()
-        # this is not good, but it is all we can do because of the bug listed above
-        return 'unknown'
-
     def tap_app(self):
         app_name = self.root_element.find_element(*self._name_locator)
         app_name.tap()
         from marketplacetests.marketplace.regions.app_details import Details
         return Details(self.marionette)
-
-
-class FilterResults(Base):
-
-    _apply_locator = (By.CSS_SELECTOR, '.footer-action > .apply')
-    _all_price_filter_locator = (By.CSS_SELECTOR, '#filter-prices > li:nth-child(1) > a')
-    _free_price_filter_locator = (By.CSS_SELECTOR, '#filter-prices > li:nth-child(2) > a')
-    _paid_price_filter_locator = (By.CSS_SELECTOR, '#filter-prices > li:nth-child(3) > a')
-
-    def __init__(self, marionette):
-        Base.__init__(self, marionette)
-        self.wait_for_element_displayed(*self._apply_locator)
-
-    def by_price(self, filter_name):
-        self.marionette.find_element(*getattr(self, '_%s_price_filter_locator' % filter_name)).tap()
-
-    def tap_apply(self):
-        self.marionette.find_element(*self._apply_locator).tap()
-        return SearchResults(self.marionette)
