@@ -31,7 +31,7 @@ class Settings(Base):
 
     def tap_sign_in(self):
         self.marionette.find_element(*self._sign_in_button_locator).tap()
-        from gaiatest.apps.persona.app import Persona
+        from marketplacetests.persona.app import Persona
         return Persona(self.marionette)
 
     def wait_for_sign_out_button(self):

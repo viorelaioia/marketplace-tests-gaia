@@ -12,6 +12,7 @@ class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
     test_comment = 'This is a test comment.'
 
     def test_marketplace_feedback_anonymous(self):
+
         # launch marketplace dev and go to marketplace
         self.marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         self.marketplace.launch()

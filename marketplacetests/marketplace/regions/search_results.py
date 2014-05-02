@@ -60,7 +60,8 @@ class Result(PageRegion):
         price_match = re.search('\$\d+\.\d{2}', self.root_element.text)
         if price_match:
                 return price_match.group()
-        return 'Free'
+        # this is not good, but it is all we can do because of the bug listed above
+        return 'unknown'
 
     def tap_app(self):
         app_name = self.root_element.find_element(*self._name_locator)

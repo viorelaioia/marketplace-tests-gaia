@@ -12,6 +12,9 @@ class TestSearchMarketplacePaidApp(MarketplaceGaiaTestCase):
 
         APP_NAME = 'Test Zippy With Me'
 
+        if self.apps.is_app_installed(APP_NAME):
+            self.apps.uninstall(APP_NAME)
+
         marketplace = Marketplace(self.marionette, 'Marketplace Dev')
         marketplace.launch()
 
@@ -24,7 +27,12 @@ class TestSearchMarketplacePaidApp(MarketplaceGaiaTestCase):
         for result in search_results:
             if result.name == APP_NAME:
                 saved_price = result.price
-                self.assertNotEqual(saved_price, 'Free')
+                try:
+                    float(saved_price)
+                except ValueError:
+                    self.fail(
+                        'The app: %s does not appear to be a paid app. Its price is "%s".' %
+                        (APP_NAME, saved_price))
                 details_page = result.tap_app()
                 self.assertEqual(saved_price, details_page.install_button_text)
                 return True
