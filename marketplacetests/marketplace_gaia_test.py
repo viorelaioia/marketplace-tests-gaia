@@ -14,10 +14,6 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
         GaiaTestCase.setUp(self)
         self.install_certs()
         self.connect_to_network()
-        self.marionette.timeout = 60 * 1000
-        self.marionette.timeouts(self.marionette.TIMEOUT_SEARCH, self.marionette.timeout)
-        self.marionette.timeouts(self.marionette.TIMEOUT_SCRIPT, self.marionette.timeout)
-        self.marionette.timeouts(self.marionette.TIMEOUT_PAGE, self.marionette.timeout)
         self.wait_for_element_not_displayed('id', 'os-logo')
         self.install_marketplace()
 
