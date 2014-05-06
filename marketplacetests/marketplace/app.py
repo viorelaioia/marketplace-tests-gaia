@@ -35,6 +35,9 @@ class Marketplace(Base):
     _search_locator = (By.ID, 'search-q')
     _signed_in_notification_locator = (By.CSS_SELECTOR, '#notification.show')
 
+    # System app install notification message
+    _install_notification_locator = (By.CSS_SELECTOR, '#system-banner > p')
+
     def __init__(self, marionette, app_name=False):
         Base.__init__(self, marionette)
         if app_name:
@@ -151,3 +154,9 @@ class Marketplace(Base):
     def submit_feedback(self):
         self.wait_for_element_displayed(*self._feedback_submit_button_locator)
         self.marionette.find_element(*self._feedback_submit_button_locator).tap()
+
+    @property
+    def install_notification_message(self):
+        self.marionette.switch_to_frame()
+        self.wait_for_element_displayed(*self._install_notification_locator)
+        return self.marionette.find_element(*self._install_notification_locator).text
