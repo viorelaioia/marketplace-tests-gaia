@@ -24,6 +24,7 @@ class TestMarketplacePurchaseApp(MarketplaceGaiaTestCase):
                                                   "verifier": "marketplace-dev.allizom.org"})
         marketplace = Marketplace(self.marionette, 'Marketplace Dev')
         marketplace.launch()
+        marketplace.wait_for_page_to_load()
 
         marketplace.login(user)
 

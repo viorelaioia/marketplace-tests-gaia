@@ -20,6 +20,7 @@ class TestMarketplaceAddReview(MarketplaceGaiaTestCase):
 
         marketplace = Marketplace(self.marionette, 'Marketplace dev')
         marketplace.launch()
+        marketplace.wait_for_page_to_load()
         marketplace.login(user)
         details_page = marketplace.navigate_to_app(APP_NAME)
 

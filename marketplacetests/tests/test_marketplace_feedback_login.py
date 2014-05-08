@@ -16,6 +16,7 @@ class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
         # launch marketplace dev and go to marketplace
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
+        marketplace.wait_for_page_to_load()
 
         user = PersonaTestUser().create_user(verified=True,
                                              env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})

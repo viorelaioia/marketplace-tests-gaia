@@ -25,6 +25,7 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
     def test_search_and_install_app(self):
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
+        marketplace.wait_for_page_to_load()
 
         self.app_name = marketplace.popular_apps[0].name
         app_author = marketplace.popular_apps[0].author

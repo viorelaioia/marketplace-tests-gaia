@@ -23,6 +23,7 @@ class Marketplace(Base):
     _back_button_locator = (By.ID, 'nav-back')
     _notification_locator = (By.ID, 'notification-content')
     _popular_apps_tab_locator = (By.CSS_SELECTOR, '#gallery .tabs a:nth-child(1)')
+    _featured_section_locator = (By.ID, 'featured')
 
     # Marketplace settings tabs
     _account_tab_locator = (By.CSS_SELECTOR, 'a[href="/settings"]')
@@ -44,8 +45,11 @@ class Marketplace(Base):
             self.name = app_name
 
     def launch(self):
-        Base.launch(self, launch_timeout=120000)
-        self.wait_for_element_not_displayed(*self._loading_fragment_locator)
+        Base.launch(self, launch_timeout=210000)
+
+    def wait_for_page_to_load(self):
+        self.wait_for_element_not_present(*self._loading_fragment_locator)
+        self.wait_for_element_displayed(*self._featured_section_locator)
 
     def login(self, user):
 

@@ -20,6 +20,7 @@ class TestMarketplaceLogin(MarketplaceGaiaTestCase):
 
         self.marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         self.marketplace.launch()
+        self.marketplace.wait_for_page_to_load()
 
     def test_login_marketplace(self):
         # https://moztrap.mozilla.org/manage/case/4134/

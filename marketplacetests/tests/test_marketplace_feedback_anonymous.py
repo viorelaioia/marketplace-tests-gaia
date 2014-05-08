@@ -16,6 +16,7 @@ class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
         # launch marketplace dev and go to marketplace
         self.marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         self.marketplace.launch()
+        self.marketplace.wait_for_page_to_load()
 
         # go to settings page
         self.marketplace.tap_settings()

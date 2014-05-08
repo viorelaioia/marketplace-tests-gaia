@@ -17,6 +17,7 @@ class TestSearchMarketplacePaidApp(MarketplaceGaiaTestCase):
 
         marketplace = Marketplace(self.marionette, 'Marketplace Dev')
         marketplace.launch()
+        marketplace.wait_for_page_to_load()
 
         marketplace.set_region('United States')
 
