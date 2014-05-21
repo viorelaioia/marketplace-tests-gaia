@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import re
-
 from marionette.by import By
 from gaiatest.apps.base import Base
 
@@ -26,6 +24,7 @@ class Details(Base):
 
     @property
     def install_button_text(self):
+        self.wait_for_element_displayed(*self._install_button_locator)
         return self.marionette.find_element(*self._install_button_locator).text
 
     @property
@@ -42,10 +41,13 @@ class Details(Base):
         from marketplacetests.marketplace.regions.review_box import AddReview
         return AddReview(self.marionette)
 
-    def tap_purchase_button(self):
+    def tap_purchase_button(self, is_logged_in=True):
         self.wait_for_element_displayed(*self._install_button_locator)
         self.marionette.find_element(*self._install_button_locator).tap()
 
-        # Return payment object
-        from marketplacetests.payment.app import Payment
-        return Payment(self.marionette)
+        if is_logged_in:
+            # Return payment object
+            from marketplacetests.payment.app import Payment
+            return Payment(self.marionette)
+        from marketplacetests.persona.app import Persona
+        return Persona(self.marionette)
