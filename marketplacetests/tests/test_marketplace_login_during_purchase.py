@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from gaiatest.apps.homescreen.regions.confirm_install import ConfirmInstall
 from gaiatest.mocks.persona_test_user import PersonaTestUser
 from marionette.errors import StaleElementException
 from marionette.wait import Wait
