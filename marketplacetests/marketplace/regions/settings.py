@@ -38,6 +38,7 @@ class Settings(Base):
         self.wait_for_element_displayed(*self._sign_out_button_locator)
 
     def tap_sign_out(self):
+        self.wait_for_sign_out_button()
         self.marionette.find_element(*self._sign_out_button_locator).tap()
 
     def tap_save_changes(self):
