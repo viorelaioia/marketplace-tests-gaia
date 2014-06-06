@@ -26,14 +26,7 @@ class TestSearchMarketplacePaidApp(MarketplaceGaiaTestCase):
 
         for result in search_results:
             if result.name == APP_NAME:
-                saved_price = result.price
-                # TODO: Remove this hack once bug https://bugzilla.mozilla.org/show_bug.cgi?id=985508 has been fixed
-                try:
-                    float(saved_price[2:])
-                except ValueError:
-                    self.fail(
-                        'The app: %s does not appear to be a paid app. Its price is "%s".' %
-                        (APP_NAME, saved_price))
+                saved_price = result.install_button_text
                 details_page = result.tap_app()
                 self.assertEqual(saved_price, details_page.install_button_text)
                 return True
