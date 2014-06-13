@@ -22,7 +22,7 @@ class TestMarketplacePurchaseApp(MarketplaceGaiaTestCase):
         user = PersonaTestUser().create_user(verified=True,
                                              env={"browserid": "firefoxos.persona.org",
                                                   "verifier": "marketplace-dev.allizom.org"})
-        marketplace = Marketplace(self.marionette, 'Marketplace Dev')
+        marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
 
         marketplace.login(user)
@@ -42,5 +42,5 @@ class TestMarketplacePurchaseApp(MarketplaceGaiaTestCase):
         confirm_install.tap_confirm()
 
         self.assertEqual('%s installed' % APP_NAME, marketplace.install_notification_message)
-        marketplace.launch()
+        marketplace.switch_to_marketplace_frame()
         self.assertEqual('Launch', details_page.install_button_text)

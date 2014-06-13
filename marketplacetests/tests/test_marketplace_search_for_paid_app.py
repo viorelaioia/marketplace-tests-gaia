@@ -15,7 +15,7 @@ class TestSearchMarketplacePaidApp(MarketplaceGaiaTestCase):
         if self.apps.is_app_installed(APP_NAME):
             self.apps.uninstall(APP_NAME)
 
-        marketplace = Marketplace(self.marionette, 'Marketplace Dev')
+        marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
 
         marketplace.set_region('United States')

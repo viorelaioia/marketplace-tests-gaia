@@ -22,7 +22,7 @@ class TestMarketplaceLoginDuringPurchase(MarketplaceGaiaTestCase):
         user = PersonaTestUser().create_user(verified=True,
                                              env={"browserid": "firefoxos.persona.org",
                                                   "verifier": "marketplace-dev.allizom.org"})
-        marketplace = Marketplace(self.marionette, 'Marketplace Dev')
+        marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
 
         marketplace.set_region('United States')
@@ -32,6 +32,6 @@ class TestMarketplaceLoginDuringPurchase(MarketplaceGaiaTestCase):
         persona.login(user.email, user.password)
 
         # Switch back to the Marketplace frame and wait for the install button to update
-        marketplace.launch()
+        marketplace.switch_to_marketplace_frame()
         Wait(marionette=self.marionette, ignored_exceptions=StaleElementException)\
             .until(lambda m: details_page.install_button_text == 'Purchasing')

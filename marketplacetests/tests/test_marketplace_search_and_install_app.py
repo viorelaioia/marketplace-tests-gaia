@@ -12,8 +12,6 @@ from marketplacetests.marketplace.app import Marketplace
 
 class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
 
-    MARKETPLACE_DEV_NAME = 'Marketplace Dev'
-
     APP_INSTALLED = False
 
     # System app confirmation button to confirm installing an app

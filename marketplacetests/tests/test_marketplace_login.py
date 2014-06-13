@@ -10,8 +10,6 @@ from marketplacetests.marketplace.app import Marketplace
 
 class TestMarketplaceLogin(MarketplaceGaiaTestCase):
 
-    MARKETPLACE_DEV_NAME = 'Marketplace Dev'
-
     def setUp(self):
         MarketplaceGaiaTestCase.setUp(self)
 
@@ -30,8 +28,7 @@ class TestMarketplaceLogin(MarketplaceGaiaTestCase):
         persona.login(self.user.email, self.user.password)
 
         # switch back to Marketplace
-        self.marionette.switch_to_frame()
-        self.marketplace.launch()
+        self.marketplace.switch_to_marketplace_frame()
 
         # wait for signed-in notification at the bottom of the screen to clear
         settings.wait_for_sign_out_button()

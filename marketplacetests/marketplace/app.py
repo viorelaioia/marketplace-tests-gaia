@@ -10,14 +10,13 @@ from gaiatest.apps.base import Base
 class Marketplace(Base):
 
     # Default to the Dev app
-    name = 'Marketplace Dev'
+    name = 'Dev'
 
-    _marketplace_iframe_locator = (By.CSS_SELECTOR, 'iframe[src*="marketplace"]')
+    _marketplace_frame_locator = (By.CSS_SELECTOR, 'iframe[src*="marketplace"]')
 
     _gallery_apps_locator = (By.CSS_SELECTOR, '#gallery .app')
     _loading_fragment_locator = (By.CSS_SELECTOR, 'div.loading-fragment')
-    _error_title_locator = (By.CSS_SELECTOR, 'h1.title')
-    _error_message_locator = (By.CSS_SELECTOR, 'span.message')
+    _offline_message_locator = (By.CSS_SELECTOR, 'div.offline-message')
     _settings_button_locator = (By.CSS_SELECTOR, 'a.header-button.settings')
     _home_button_locator = (By.CSS_SELECTOR, 'h1.site a')
     _back_button_locator = (By.ID, 'nav-back')
@@ -43,28 +42,35 @@ class Marketplace(Base):
         if app_name:
             self.name = app_name
 
-    def launch(self):
+    def launch(self, expect_success=True):
         Base.launch(self, launch_timeout=120000)
         self.wait_for_element_not_displayed(*self._loading_fragment_locator)
+        if expect_success:
+            self.switch_to_marketplace_frame()
+
+    def switch_to_marketplace_frame(self):
+        self.marionette.switch_to_frame()
+        self.wait_for_element_present(*self._marketplace_frame_locator)
+        marketplace_frame = self.marionette.find_element(*self._marketplace_frame_locator)
+        self.marionette.switch_to_frame(marketplace_frame)
+        self.wait_for_element_present(*self._marketplace_frame_locator)
+        marketplace_frame = self.marionette.find_element(*self._marketplace_frame_locator)
+        self.marionette.switch_to_frame(marketplace_frame)
 
     def login(self, user):
 
         settings = self.tap_settings()
         persona = settings.tap_sign_in()
         persona.login(user.email, user.password)
-        self.marionette.switch_to_frame()
-        self.launch()
+        self.switch_to_marketplace_frame()
         settings.wait_for_sign_out_button()
         self.wait_for_notification_message_not_displayed()
         return settings
 
     @property
-    def error_title_text(self):
-        return self.marionette.find_element(*self._error_title_locator).text
-
-    @property
-    def error_message_text(self):
-        return self.marionette.find_element(*self._error_message_locator).text
+    def offline_message_text(self):
+        self.wait_for_element_displayed(*self._offline_message_locator)
+        return self.marionette.find_element(*self._offline_message_locator).text
 
     def wait_for_notification_message_displayed(self):
         self.wait_for_element_displayed(*self._notification_locator)
@@ -148,6 +154,7 @@ class Marketplace(Base):
         feedback.clear()
         feedback.send_keys(feedback_text)
         self.keyboard.dismiss()
+        self.switch_to_marketplace_frame()
 
     def submit_feedback(self):
         self.wait_for_element_displayed(*self._feedback_submit_button_locator)

@@ -8,7 +8,6 @@ from gaiatest.mocks.persona_test_user import PersonaTestUser
 
 
 class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
-    MARKETPLACE_DEV_NAME = 'Marketplace Dev'
     feedback_submitted_message = u'Feedback submitted. Thanks!'
     test_comment = 'This is a test comment.'
 
