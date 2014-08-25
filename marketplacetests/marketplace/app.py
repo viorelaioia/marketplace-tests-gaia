@@ -17,7 +17,7 @@ class Marketplace(Base):
     _gallery_apps_locator = (By.CSS_SELECTOR, '#gallery .app')
     _loading_fragment_locator = (By.CSS_SELECTOR, 'div.loading-fragment')
     _offline_message_locator = (By.CSS_SELECTOR, 'div.offline-message')
-    _settings_button_locator = (By.CSS_SELECTOR, 'a.header-button.settings')
+    _settings_button_locator = (By.CSS_SELECTOR, '.mobile .header-button.settings')
     _home_button_locator = (By.CSS_SELECTOR, 'h1.site a')
     _back_button_locator = (By.ID, 'nav-back')
     _notification_locator = (By.ID, 'notification-content')
