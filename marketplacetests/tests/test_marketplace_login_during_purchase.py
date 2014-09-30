@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from gaiatest.mocks.persona_test_user import PersonaTestUser
 from marionette.errors import StaleElementException
 from marionette.wait import Wait
 
@@ -15,21 +14,20 @@ class TestMarketplaceLoginDuringPurchase(MarketplaceGaiaTestCase):
     def test_purchase_app(self):
 
         APP_NAME = 'Test Zippy With Me'
+        username = self.testvars['marketplace']['username']
+        password = self.testvars['marketplace']['password']
 
         if self.apps.is_app_installed(APP_NAME):
             self.apps.uninstall(APP_NAME)
 
-        user = PersonaTestUser().create_user(verified=True,
-                                             env={"browserid": "firefoxos.persona.org",
-                                                  "verifier": "marketplace-dev.allizom.org"})
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
 
         marketplace.set_region('United States')
 
         details_page = marketplace.navigate_to_app(APP_NAME)
-        persona = details_page.tap_purchase_button(is_logged_in=False)
-        persona.login(user.email, user.password)
+        ff_accounts = details_page.tap_purchase_button(is_logged_in=False)
+        ff_accounts.login(username, password)
 
         # Switch back to the Marketplace frame and wait for the install button to update
         marketplace.switch_to_marketplace_frame()

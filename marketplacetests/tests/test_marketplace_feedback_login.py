@@ -4,7 +4,6 @@
 
 from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
-from gaiatest.mocks.persona_test_user import PersonaTestUser
 
 
 class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
@@ -12,13 +11,13 @@ class TestMarketplaceFeedback(MarketplaceGaiaTestCase):
     test_comment = 'This is a test comment.'
 
     def test_marketplace_feedback_user(self):
+        username = self.testvars['marketplace']['username']
+        password = self.testvars['marketplace']['password']
+
         # launch marketplace dev and go to marketplace
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
-
-        user = PersonaTestUser().create_user(verified=True,
-                                             env={"browserid": "firefoxos.persona.org", "verifier": "marketplace-dev.allizom.org"})
-        marketplace.login(user)
+        marketplace.login(username, password)
 
         # go to feedback tab
         marketplace.select_setting_feedback()

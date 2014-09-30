@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from gaiatest.mocks.persona_test_user import PersonaTestUser
-
 from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 
@@ -14,17 +12,16 @@ class TestMarketplaceCreateConfirmPin(MarketplaceGaiaTestCase):
 
         APP_NAME = 'Test Zippy With Me'
         PIN = '1234'
+        username = self.testvars['marketplace']['username']
+        password = self.testvars['marketplace']['password']
 
         if self.apps.is_app_installed(APP_NAME):
             self.apps.uninstall(APP_NAME)
 
-        user = PersonaTestUser().create_user(verified=True,
-                                             env={"browserid": "firefoxos.persona.org",
-                                                  "verifier": "marketplace-dev.allizom.org"})
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
 
-        marketplace.login(user)
+        marketplace.login(username, password)
 
         marketplace.set_region('United States')
 

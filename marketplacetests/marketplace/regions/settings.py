@@ -10,7 +10,7 @@ class Settings(Base):
 
     _email_account_field_locator = (By.ID, 'email')
     _save_locator = (By.CSS_SELECTOR, 'footer > p > button')
-    _sign_in_button_locator = (By.CSS_SELECTOR, 'a.button.persona')
+    _sign_in_button_locator = (By.CSS_SELECTOR, '.only-logged-out a:not(.register)')
     _sign_out_button_locator = (By.CSS_SELECTOR, 'a.button.logout')
     _back_button_locator = (By.ID, 'nav-back')
     _save_changes_button_locator = (By.XPATH, "//section[@id='account-settings']//button[text()='Save Changes']")
@@ -29,8 +29,8 @@ class Settings(Base):
 
     def tap_sign_in(self):
         self.marionette.find_element(*self._sign_in_button_locator).tap()
-        from marketplacetests.persona.app import Persona
-        return Persona(self.marionette)
+        from marketplacetests.firefox_accounts.app import FirefoxAccounts
+        return FirefoxAccounts(self.marionette)
 
     def wait_for_sign_out_button(self):
         self.wait_for_element_displayed(*self._sign_out_button_locator)

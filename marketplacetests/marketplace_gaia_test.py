@@ -5,7 +5,6 @@
 import os
 
 from gaiatest.gaia_test import GaiaTestCase
-from marionette.by import By
 
 
 class MarketplaceGaiaTestCase(GaiaTestCase):
@@ -17,7 +16,7 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
         self.wait_for_element_not_displayed('id', 'os-logo')
 
         # Use this to override the Marketplace app version
-        self.MARKETPLACE_DEV_NAME = 'Dev'
+        self.MARKETPLACE_DEV_NAME = 'Marketplace'
 
     def install_certs(self):
         """ Install the marketplace-dev certs and set the pref required """
@@ -27,7 +26,8 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
                 profile_folder = file_name
                 break
         for file_name in os.listdir(certs_folder):
-            self.device.push_file(os.path.join(certs_folder, file_name),
-                                  destination='data/b2g/mozilla/%s/%s' % (profile_folder, file_name))
+            self.device.file_manager.push_file(os.path.join(certs_folder, file_name),
+                                  remote_path='data/b2g/mozilla/%s' % profile_folder)
         self.data_layer.set_char_pref('dom.mozApps.signed_apps_installable_from',
                                       'https://marketplace-dev.allizom.org,https://marketplace.firefox.com')
+        self.data_layer.set_bool_pref('dom.mozApps.use_reviewer_certs', True)

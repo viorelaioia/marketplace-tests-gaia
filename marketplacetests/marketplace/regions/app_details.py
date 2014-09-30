@@ -49,5 +49,5 @@ class Details(Base):
             # Return payment object
             from marketplacetests.payment.app import Payment
             return Payment(self.marionette)
-        from marketplacetests.persona.app import Persona
-        return Persona(self.marionette)
+        from marketplacetests.firefox_accounts.app import FirefoxAccounts
+        return FirefoxAccounts(self.marionette)
