@@ -12,7 +12,7 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
     def setUp(self):
         GaiaTestCase.setUp(self)
         self.install_certs()
-        self.connect_to_network()
+        self.connect_to_local_area_network()
         self.wait_for_element_not_displayed('id', 'os-logo')
 
         # Use this to override the Marketplace app version
@@ -27,7 +27,7 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
                 break
         for file_name in os.listdir(certs_folder):
             self.device.file_manager.push_file(os.path.join(certs_folder, file_name),
-                                  remote_path='data/b2g/mozilla/%s' % profile_folder)
+                                               remote_path='data/b2g/mozilla/%s' % profile_folder)
         self.data_layer.set_char_pref('dom.mozApps.signed_apps_installable_from',
                                       'https://marketplace-dev.allizom.org,https://marketplace.firefox.com')
         self.data_layer.set_bool_pref('dom.mozApps.use_reviewer_certs', True)

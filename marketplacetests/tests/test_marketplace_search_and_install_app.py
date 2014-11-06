@@ -55,9 +55,3 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
         self.apps.switch_to_displayed_app()
 
         self.assertTrue(homescreen.is_app_installed(self.app_name))
-
-    def tearDown(self):
-        if self.APP_INSTALLED:
-            self.apps.uninstall(self.app_name)
-
-        MarketplaceGaiaTestCase.tearDown(self)
