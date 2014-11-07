@@ -13,6 +13,7 @@ class FirefoxAccounts(Base):
 
     # firefox accounts login
     _body_loading_locator = (By.CSS_SELECTOR, 'body.loading')
+    _next_button_locator = (By.ID, 'email-button')
     _email_input_locator = (By.CSS_SELECTOR, '.email')
     _password_input_locator = (By.ID, 'password')
     _sign_in_button_locator = (By.ID, 'submit-btn')
@@ -30,6 +31,8 @@ class FirefoxAccounts(Base):
     def login(self, email, password):
         self.wait_for_element_displayed(*self._email_input_locator)
         self.type_email(email)
+        if self.is_element_present(*self._next_button_locator):
+            self.tap_next()
         self.wait_for_element_displayed(*self._password_input_locator)
         self.type_password(password)
         self.tap_sign_in()
@@ -41,6 +44,9 @@ class FirefoxAccounts(Base):
     def type_password(self, value):
         password_field = self.marionette.find_element(*self._password_input_locator)
         password_field.send_keys(value)
+
+    def tap_next(self):
+        self.marionette.find_element(*self._next_button_locator).tap()
 
     def tap_sign_in(self):
         self.marionette.find_element(*self._sign_in_button_locator).tap()
