@@ -14,6 +14,8 @@ class Settings(Base):
     _sign_out_button_locator = (By.CSS_SELECTOR, 'a.button.logout')
     _back_button_locator = (By.ID, 'nav-back')
     _save_changes_button_locator = (By.XPATH, "//section[@id='account-settings']//button[text()='Save Changes']")
+    _my_apps_tab_locator = (By.CSS_SELECTOR, '.tab-link[href="/purchases"]')
+    _login_required_message_locator = (By.CSS_SELECTOR, '.only-logged-out .notice')
 
     def __init__(self, marionette):
         Base.__init__(self, marionette)
@@ -45,3 +47,25 @@ class Settings(Base):
     @property
     def email(self):
         return self.marionette.find_element(*self._email_account_field_locator).get_attribute('value')
+
+    def go_to_my_apps_page(self):
+        self.marionette.find_element(*self._my_apps_tab_locator).tap()
+        return MyApps(self.marionette)
+
+
+class MyApps(Base):
+
+    _login_required_message_locator = (By.CSS_SELECTOR, '.only-logged-out .notice')
+    _my_apps_list_locator = (By.CSS_SELECTOR, '.item.result')
+    _settings_page_locator = (By.CSS_SELECTOR, '.tab-link[href="/settings"]')
+
+    @property
+    def login_required_message(self):
+        return self.marionette.find_element(*self._login_required_message_locator).text
+
+    @property
+    def my_apps_list(self):
+        return self.marionette.find_elements(*self._my_apps_list_locator)
+
+    def go_to_settings_page(self):
+        self.marionette.find_element(*self._settings_page_locator).tap()
