@@ -5,6 +5,7 @@
 from marionette.by import By
 from marionette.keys import Keys
 from gaiatest.apps.base import Base
+from gaiatest.apps.base import PageRegion
 
 
 class Marketplace(Base):
@@ -37,6 +38,10 @@ class Marketplace(Base):
 
     # System app install notification message
     _install_notification_locator = (By.CSS_SELECTOR, '.banner.generic-dialog > p')
+
+    # Marketplace categories tab
+    _categories_tab_locator = (By.CSS_SELECTOR, 'a[href="/categories"]')
+    _categories_list_locator = (By.CSS_SELECTOR, '.category-index a')
 
     def __init__(self, marionette, app_name=False):
         Base.__init__(self, marionette)
@@ -165,3 +170,26 @@ class Marketplace(Base):
         self.marionette.switch_to_frame()
         self.wait_for_element_displayed(*self._install_notification_locator)
         return self.marionette.find_element(*self._install_notification_locator).text
+
+    def show_categories_page(self):
+        self.wait_for_element_displayed(*self._categories_tab_locator)
+        self.marionette.find_element(*self._categories_tab_locator).tap()
+        #self.wait_for_condition(lambda m: len(self.categories) > 0)
+
+    @property
+    def categories(self):
+        return [self.Category(self.marionette, category) for category in self.marionette.find_elements(*self._categories_list_locator)]
+
+    class Category(PageRegion):
+
+        _category_name_locator = (By.CSS_SELECTOR, 'p')
+        _category_div_locator = (By.CSS_SELECTOR, 'div')
+
+        @property
+        def name(self):
+            return self.root_element.find_element(*self._category_name_locator).text
+
+        def tap_category(self):
+            self.root_element.find_element(*self._category_div_locator).tap()
+            from marketplacetests.marketplace.regions.category import Category
+            return Category(self.marionette)
