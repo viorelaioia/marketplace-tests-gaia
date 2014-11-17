@@ -35,11 +35,15 @@ class Details(Base):
     def first_review_rating(self):
         return int(self.marionette.find_element(*self._first_review_locator).get_attribute('class')[-1])
 
-    def tap_write_review(self):
+    def tap_write_review(self, logged_in=True):
         self.wait_for_element_displayed(*self._write_review_locator)
         self.marionette.find_element(*self._write_review_locator).tap()
-        from marketplacetests.marketplace.regions.review_box import AddReview
-        return AddReview(self.marionette)
+        if logged_in == False:
+            from marketplacetests.firefox_accounts.app import FirefoxAccounts
+            return FirefoxAccounts(self.marionette)
+        else:
+            from marketplacetests.marketplace.regions.review_box import AddReview
+            return AddReview(self.marionette)
 
     def tap_purchase_button(self, is_logged_in=True):
         self.wait_for_element_displayed(*self._install_button_locator)
