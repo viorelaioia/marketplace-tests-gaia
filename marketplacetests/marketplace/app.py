@@ -11,14 +11,13 @@ class Marketplace(Base):
 
     # Default to the Dev app
     name = 'Marketplace'
-    manifest_url = "https://marketplace.firefox.com/app/965bbfd7-936d-451d-bebf-fafdc7ce8d9e/manifest.webapp"
 
     _marketplace_frame_locator = (By.CSS_SELECTOR, 'iframe[src*="marketplace"]')
 
     _gallery_apps_locator = (By.CSS_SELECTOR, '.app')
     _loading_fragment_locator = (By.CSS_SELECTOR, 'div.loading-fragment')
     _offline_message_locator = (By.CSS_SELECTOR, 'div.error-message[data-l10n="offline"]')
-    _settings_button_locator = (By.CSS_SELECTOR, '.mobile .header-button.settings')
+    _settings_button_locator = (By.CSS_SELECTOR, '.act-tray-mobile .header-button.settings')
     _home_button_locator = (By.CSS_SELECTOR, 'h1.site a')
     _back_button_locator = (By.ID, 'nav-back')
     _notification_locator = (By.ID, 'notification-content')
@@ -42,6 +41,7 @@ class Marketplace(Base):
         Base.__init__(self, marionette)
         if app_name:
             self.name = app_name
+        self.manifest_url = "https://marketplace.firefox.com/app/965bbfd7-936d-451d-bebf-fafdc7ce8d9e/manifest.webapp"
 
     def launch(self, expect_success=True):
         Base.launch(self, launch_timeout=120000)

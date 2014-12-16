@@ -49,4 +49,6 @@ class FirefoxAccounts(Base):
         self.marionette.find_element(*self._next_button_locator).tap()
 
     def tap_sign_in(self):
+        self.keyboard.dismiss()
+        self.wait_for_element_displayed(*self._sign_in_button_locator)
         self.marionette.find_element(*self._sign_in_button_locator).tap()
