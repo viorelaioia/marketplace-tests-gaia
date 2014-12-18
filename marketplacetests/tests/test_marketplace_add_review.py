@@ -5,6 +5,8 @@
 import time
 import random
 
+from fxapom.fxapom import FxATestAccount
+
 from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 
@@ -13,12 +15,11 @@ class TestMarketplaceAddReview(MarketplaceGaiaTestCase):
 
     def test_add_review(self):
         APP_NAME = 'SoundCloud'
-        username = self.testvars['marketplace']['username']
-        password = self.testvars['marketplace']['password']
+        acct = FxATestAccount(use_prod=False).create_account()
 
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
-        marketplace.login(username, password)
+        marketplace.login(acct.email, acct.password)
         details_page = marketplace.navigate_to_app(APP_NAME)
 
         current_time = str(time.time()).split('.')[0]

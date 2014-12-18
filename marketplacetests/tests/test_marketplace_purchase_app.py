@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+from fxapom.fxapom import FxATestAccount
 from gaiatest.apps.homescreen.regions.confirm_install import ConfirmInstall
 
 from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
@@ -14,8 +14,7 @@ class TestMarketplacePurchaseApp(MarketplaceGaiaTestCase):
 
         APP_NAME = 'Test Zippy With Me'
         PIN = '1234'
-        username = self.testvars['marketplace']['username']
-        password = self.testvars['marketplace']['password']
+        acct = FxATestAccount(use_prod=False).create_account()
 
         if self.apps.is_app_installed(APP_NAME):
             self.apps.uninstall(APP_NAME)
@@ -23,7 +22,7 @@ class TestMarketplacePurchaseApp(MarketplaceGaiaTestCase):
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
 
-        marketplace.login(username, password)
+        marketplace.login(acct.email, acct.password)
 
         marketplace.set_region('United States')
 
