@@ -1,6 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 from fxapom.fxapom import FxATestAccount
 from gaiatest.apps.homescreen.regions.confirm_install import ConfirmInstall
 
@@ -40,4 +41,4 @@ class TestMarketplacePurchaseApp(MarketplaceGaiaTestCase):
 
         self.assertEqual('%s installed' % APP_NAME, marketplace.install_notification_message)
         marketplace.switch_to_marketplace_frame()
-        self.assertEqual('Launch', details_page.install_button_text)
+        self.assertEqual('Open', details_page.install_button_text)

@@ -11,6 +11,8 @@ class Payment(Base):
 
     _payment_frame_locator = (By.CSS_SELECTOR, "#trustedui-frame-container > iframe")
 
+    _loading_throbber_locator = (By.CSS_SELECTOR, '.loading')
+
     # Create/confirm PIN
     _pin_container_locator = (By.CSS_SELECTOR, '.pinbox')
     _pin_digit_holder_locator = (By.CSS_SELECTOR, '.pinbox span')
@@ -46,6 +48,10 @@ class Payment(Base):
         self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
         self.tap_pin_continue()
         self.wait_for_element_displayed(*self._pin_container_locator)
+
+        # Workaround click because Marionette makes the keyboard disappear
+        self.marionette.find_element(*self._pin_container_locator).click()
+
         Wait(marionette=self.marionette).until(lambda m: 'Confirm' in self.pin_heading)
         self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
         self.tap_pin_continue()
@@ -59,6 +65,10 @@ class Payment(Base):
         self.wait_for_element_displayed(*self._buy_button_locator)
 
     def tap_buy_button(self):
+        self.marionette.switch_to_frame()
+        self.wait_for_element_not_displayed(*self._loading_throbber_locator)
+        payment_iframe = self.marionette.find_element(*self._payment_frame_locator)
+        self.marionette.switch_to_frame(payment_iframe)
         self.marionette.find_element(*self._buy_button_locator).tap()
         self.marionette.switch_to_frame()
         self.wait_for_element_not_present(*self._payment_frame_locator)
