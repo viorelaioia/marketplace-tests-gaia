@@ -2,10 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from marionette.by import By
 from gaiatest.apps.base import Base
-
-from marketplacetests.keyboard.app import Keyboard
+from marionette.by import By
+from marionette.wait import Wait
 
 
 class Payment(Base):
@@ -13,10 +12,10 @@ class Payment(Base):
     _payment_frame_locator = (By.CSS_SELECTOR, "#trustedui-frame-container > iframe")
 
     # Create/confirm PIN
-    _create_pin_form_locator = (By.CSS_SELECTOR, 'form[action="/mozpay/pin/create"]')
-    _pin_input_locator = (By.CSS_SELECTOR, 'div.pinbox span')
-    _confirm_pin_form_locator = (By.CSS_SELECTOR, 'form[action="/mozpay/pin/confirm"]')
-    _pin_continue_button_locator = (By.CSS_SELECTOR, '#pin > footer > button')
+    _pin_container_locator = (By.CSS_SELECTOR, '.pinbox')
+    _pin_digit_holder_locator = (By.CSS_SELECTOR, '.pinbox span')
+    _pin_continue_button_locator = (By.CSS_SELECTOR, '.cta')
+    _pin_heading_locator = (By.CSS_SELECTOR, 'section.content h1')
 
     # Final buy app panel
     _app_name_locator = (By.CSS_SELECTOR, '.product .title')
@@ -37,24 +36,24 @@ class Payment(Base):
     def app_name(self):
         return self.marionette.find_element(*self._app_name_locator).text
 
-    def create_pin(self, pin):
-        self.wait_for_element_displayed(*self._create_pin_form_locator)
-        self.type_pin_number(pin)
-        self.tap_pin_continue()
-        self.wait_for_element_displayed(*self._confirm_pin_form_locator)
-        self.type_pin_number(pin)
-        self.tap_pin_continue()
+    @property
+    def pin_heading(self):
+        return self.marionette.find_element(*self._pin_heading_locator).text
 
-    def type_pin_number(self, pin):
-        keyboard = Keyboard(self.marionette)
-        self.marionette.find_element(*self._pin_input_locator).tap()
-        keyboard.switch_to_keyboard()
-        for num in pin:
-            keyboard._tap(num)
-        self.switch_to_payment_frame()
+    def create_pin(self, pin):
+        self.wait_for_element_displayed(*self._pin_container_locator)
+        Wait(marionette=self.marionette).until(lambda m: 'Create' in self.pin_heading)
+        self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
+        self.tap_pin_continue()
+        self.wait_for_element_displayed(*self._pin_container_locator)
+        Wait(marionette=self.marionette).until(lambda m: 'Confirm' in self.pin_heading)
+        self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
+        self.tap_pin_continue()
 
     def tap_pin_continue(self):
-        self.marionette.find_element(*self._pin_continue_button_locator).tap()
+        button = self.marionette.find_element(*self._pin_continue_button_locator)
+        Wait(marionette=self.marionette).until(lambda m: button.is_enabled())
+        button.tap()
 
     def wait_for_buy_app_section_displayed(self):
         self.wait_for_element_displayed(*self._buy_button_locator)
