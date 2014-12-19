@@ -1,9 +1,9 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+from fxapom.fxapom import FxATestAccount
 
 from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
-
 from marketplacetests.marketplace.app import Marketplace
 
 
@@ -17,13 +17,12 @@ class TestMarketplaceLogin(MarketplaceGaiaTestCase):
 
     def test_login_marketplace(self):
         # https://moztrap.mozilla.org/manage/case/4134/
-        username = self.testvars['marketplace']['username']
-        password = self.testvars['marketplace']['password']
+        acct = FxATestAccount(use_prod=False).create_account()
 
         settings = self.marketplace.tap_settings()
         ff_accounts = settings.tap_sign_in()
 
-        ff_accounts.login(username, password)
+        ff_accounts.login(acct.email, acct.password)
 
         # switch back to Marketplace
         self.marketplace.switch_to_marketplace_frame()
@@ -33,7 +32,7 @@ class TestMarketplaceLogin(MarketplaceGaiaTestCase):
         self.marketplace.wait_for_notification_message_not_displayed()
 
         # Verify that user is logged in
-        self.assertEqual(username, settings.email)
+        self.assertEqual(acct.email, settings.email)
 
         # Sign out, which should return to the Marketplace home screen
         settings.tap_sign_out()

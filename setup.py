@@ -8,9 +8,6 @@ try:
 except (OSError, IOError):
     description = ''
 
-# dependencies
-deps = ['gaiatest-v2.0']
-
 setup(name='marketplacetests',
       version='1.0',
       description="Gaia UI test for Marketplace",
@@ -22,6 +19,5 @@ setup(name='marketplacetests',
       url='https://wiki.mozilla.org/QA/Execution/Web_Testing',
       license='MPL',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
-      install_requires=deps,
       include_package_data=True,
       )
