@@ -25,6 +25,14 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
         marketplace.launch()
 
         self.app_name = marketplace.popular_apps[0].name
+
+        # Remove the app if already installed
+        if self.apps.is_app_installed(self.app_name):
+            self.apps.kill(marketplace.app)
+            self.apps.uninstall(self.app_name)
+            marketplace.launch()
+        marketplace.switch_to_marketplace_frame()
+
         app_author = marketplace.popular_apps[0].author
         results = marketplace.search(self.app_name)
 
@@ -48,7 +56,7 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
         self.APP_INSTALLED = True
 
         # Press Home button
-        self.marionette.execute_script("window.wrappedJSObject.dispatchEvent(new Event('home'));")
+        self.device.touch_home_button()
 
         # Check that the icon of the app is on the homescreen
         homescreen = Homescreen(self.marionette)
