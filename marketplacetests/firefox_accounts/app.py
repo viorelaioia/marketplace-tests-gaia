@@ -19,6 +19,8 @@ class FirefoxAccounts(Base):
     _password_input_locator = (By.ID, 'password')
     _sign_in_button_locator = (By.ID, 'submit-btn')
     _not_you_logout_link_locator = (By.CSS_SELECTOR, '.logout')
+    _firefox_logo_locator = (By.ID, 'fox-logo')
+    _forgot_password_locator = (By.CSS_SELECTOR, '.left.reset-password')
 
     def __init__(self, marionette):
         Base.__init__(self, marionette)
@@ -52,6 +54,7 @@ class FirefoxAccounts(Base):
         email_field.send_keys(value)
 
     def type_password(self, value):
+        self.wait_for_element_displayed(*self._password_input_locator)
         password_field = self.marionette.find_element(*self._password_input_locator)
         password_field.send_keys(value)
 
@@ -77,3 +80,12 @@ class FirefoxAccounts(Base):
     @property
     def email_text(self):
         return self.marionette.find_element(*self._email_input_locator).text
+
+    def tap_sign_in(self, second_login=False):
+        if not second_login:
+            self.keyboard.dismiss()
+        self.wait_for_element_displayed(*self._sign_in_button_locator)
+        self.marionette.find_element(*self._sign_in_button_locator).tap()
+
+    def tap_forgot_password(self):
+        self.marionette.find_element(*self._forgot_password_locator).tap()

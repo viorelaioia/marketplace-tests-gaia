@@ -27,6 +27,8 @@ class Payment(Base):
     _confirm_payment_header_locator = (By.CSS_SELECTOR, 'main > h1')
     _in_app_product_name_locator = (By.CSS_SELECTOR, '.title')
     _in_app_confirm_buy_button_locator = (By.ID, 'uxBtnBuyNow')
+    _forgot_pin_locator = (By.CSS_SELECTOR, '.forgot-pin a')
+    _reset_pin_locator = (By.XPATH, "//button[text()='Reset']")
 
     def __init__(self, marionette):
         Base.__init__(self, marionette)
@@ -57,7 +59,7 @@ class Payment(Base):
 
     def create_pin(self, pin):
         self.wait_for_element_displayed(*self._pin_container_locator)
-        Wait(marionette=self.marionette).until(lambda m: 'Create' in self.pin_heading)
+        Wait(marionette=self.marionette).until(lambda m: 'Create' or 'Reset' in self.pin_heading)
         self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
         self.tap_pin_continue()
 
@@ -99,3 +101,24 @@ class Payment(Base):
         self.marionette.switch_to_frame()
         self.wait_for_element_not_present(*self._payment_frame_locator)
         self.apps.switch_to_displayed_app()
+        self.marionette.switch_to_frame()
+
+    def wait_for_throbber_not_displayed(self):
+        self.marionette.switch_to_frame()
+        self.wait_for_element_displayed(*self._loading_throbber_locator)
+        self.wait_for_element_not_displayed(*self._loading_throbber_locator)
+        self.switch_to_payment_frame()
+
+    def tap_cancel_button(self):
+        self.wait_for_throbber_not_displayed()
+        self.marionette.find_element(*self._cancel_button_locator).tap()
+        self.marionette.switch_to_frame()
+        self.wait_for_element_not_present(*self._payment_frame_locator)
+        self.marionette.switch_to_frame()
+
+    def tap_forgot_pin(self):
+        self.switch_to_payment_frame()
+        self.marionette.find_element(*self._forgot_pin_locator).tap()
+
+    def tap_reset_button(self):
+        self.marionette.find_element(*self._reset_pin_locator).tap()
