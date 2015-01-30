@@ -32,6 +32,6 @@ class TestMarketplaceAddReview(MarketplaceGaiaTestCase):
         marketplace.wait_for_notification_message_displayed()
 
         # Check if review was added correctly
-        self.assertEqual(marketplace.notification_message, "Your review was posted")
+        self.assertEqual(marketplace.notification_message, "Your review was successfully posted. Thanks!")
         self.assertEqual(details_page.first_review_rating, rating)
         self.assertEqual(details_page.first_review_body, body)

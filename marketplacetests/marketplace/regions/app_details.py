@@ -8,10 +8,10 @@ from gaiatest.apps.base import Base
 
 class Details(Base):
 
-    _write_review_locator = (By.ID, 'add-review')
+    _write_review_locator = (By.CSS_SELECTOR, 'a.review-button')
     _app_info_locator = (By.CSS_SELECTOR, '.detail .info')
-    _first_review_locator = (By.CSS_SELECTOR, 'li:first-child .review-inner > span')
-    _first_review_body_locator = (By.CSS_SELECTOR, 'li:first-child .body')
+    _first_review_locator = (By.CSS_SELECTOR, '.reviews-wrapper li:first-child')
+    _first_review_body_locator = (By.CSS_SELECTOR, '.reviews-wrapper .review-body')
     _install_button_locator = (By.CSS_SELECTOR, '.detail .info button.product.install')
 
     def __init__(self, marionette):
@@ -33,12 +33,12 @@ class Details(Base):
 
     @property
     def first_review_rating(self):
-        return int(self.marionette.find_element(*self._first_review_locator).get_attribute('class')[-1])
+        return int(self.marionette.find_element(*self._first_review_locator).get_attribute('data-rating'))
 
     def tap_write_review(self, logged_in=True):
         self.wait_for_element_displayed(*self._write_review_locator)
         self.marionette.find_element(*self._write_review_locator).tap()
-        if logged_in == False:
+        if not logged_in:
             from marketplacetests.firefox_accounts.app import FirefoxAccounts
             return FirefoxAccounts(self.marionette)
         else:
