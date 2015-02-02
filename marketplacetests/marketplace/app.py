@@ -14,7 +14,7 @@ class Marketplace(Base):
 
     _marketplace_frame_locator = (By.CSS_SELECTOR, 'iframe[src*="marketplace"]')
 
-    _gallery_apps_locator = (By.CSS_SELECTOR, '.app')
+    _gallery_apps_locator = (By.CSS_SELECTOR, '.app-list-app')
     _loading_fragment_locator = (By.CSS_SELECTOR, 'div.loading-fragment')
     _offline_message_locator = (By.CSS_SELECTOR, 'div.error-message[data-l10n="offline"]')
     _settings_button_locator = (By.CSS_SELECTOR, '.act-tray.active .header-button.settings')

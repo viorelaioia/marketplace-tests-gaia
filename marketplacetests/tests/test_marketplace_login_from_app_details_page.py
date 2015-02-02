@@ -7,6 +7,7 @@ import random
 
 from fxapom.fxapom import FxATestAccount
 
+from marketplacetests.marketplace.regions.review_box import AddReview
 from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
 
@@ -26,13 +27,10 @@ class TestMarketplaceLoginFromAppDetailsPage(MarketplaceGaiaTestCase):
 
         # switch back to Marketplace
         marketplace.switch_to_marketplace_frame()
-        marketplace.wait_for_notification_message_displayed()
-        marketplace.wait_for_notification_message_not_displayed()
 
         current_time = str(time.time()).split('.')[0]
         rating = random.randint(1, 5)
         body = 'This is a test %s' % current_time
-        from marketplacetests.marketplace.regions.review_box import AddReview
         review_box = AddReview(self.marionette)
 
         review_box.write_a_review(rating, body)

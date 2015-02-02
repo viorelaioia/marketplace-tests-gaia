@@ -47,7 +47,6 @@ class Payment(Base):
         Wait(marionette=self.marionette).until(lambda m: 'Create' in self.pin_heading)
         self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
         self.tap_pin_continue()
-        self.wait_for_element_displayed(*self._pin_container_locator)
 
         # Workaround click because Marionette makes the keyboard disappear
         self.marionette.find_element(*self._pin_container_locator).click()
