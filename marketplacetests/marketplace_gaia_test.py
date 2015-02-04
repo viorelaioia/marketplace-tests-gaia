@@ -18,6 +18,9 @@ class MarketplaceGaiaTestCase(GaiaTestCase):
         # Use this to override the Marketplace app version
         self.MARKETPLACE_DEV_NAME = 'Marketplace'
 
+        # This is used to tell FxA whether to create a dev or prod account
+        self.base_url = 'https://marketplace-dev.allizom.org'
+
     def install_certs(self):
         """ Install the marketplace-dev certs and set the pref required """
         certs_folder = os.path.join('marketplacetests', 'certs')

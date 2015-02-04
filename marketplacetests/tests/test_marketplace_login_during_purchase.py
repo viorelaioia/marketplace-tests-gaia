@@ -15,7 +15,7 @@ class TestMarketplaceLoginDuringPurchase(MarketplaceGaiaTestCase):
 
         APP_NAME = 'Test Zippy With Me'
         PIN = '1234'
-        acct = FxATestAccount(use_prod=False).create_account()
+        acct = FxATestAccount(base_url=self.base_url).create_account()
 
         if self.apps.is_app_installed(APP_NAME):
             self.apps.uninstall(APP_NAME)

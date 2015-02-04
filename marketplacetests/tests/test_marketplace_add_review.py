@@ -15,7 +15,7 @@ class TestMarketplaceAddReview(MarketplaceGaiaTestCase):
 
     def test_add_review(self):
         APP_NAME = 'SoundCloud'
-        acct = FxATestAccount(use_prod=False).create_account()
+        acct = FxATestAccount(base_url=self.base_url).create_account()
 
         marketplace = Marketplace(self.marionette, self.MARKETPLACE_DEV_NAME)
         marketplace.launch()
