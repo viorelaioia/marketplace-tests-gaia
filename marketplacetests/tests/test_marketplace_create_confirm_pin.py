@@ -1,10 +1,12 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 from fxapom.fxapom import FxATestAccount
 
 from marketplacetests.marketplace_gaia_test import MarketplaceGaiaTestCase
 from marketplacetests.marketplace.app import Marketplace
+from marketplacetests.payment.app import Payment
 
 
 class TestMarketplaceCreateConfirmPin(MarketplaceGaiaTestCase):
@@ -26,8 +28,9 @@ class TestMarketplaceCreateConfirmPin(MarketplaceGaiaTestCase):
         marketplace.set_region('United States')
 
         details_page = marketplace.navigate_to_app(APP_NAME)
-        payment = details_page.tap_purchase_button()
+        details_page.tap_install_button()
 
+        payment = Payment(self.marionette)
         payment.create_pin(PIN)
         payment.wait_for_buy_app_section_displayed()
         self.assertIn(APP_NAME, payment.app_name)

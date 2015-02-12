@@ -18,11 +18,15 @@ class Payment(Base):
     _pin_digit_holder_locator = (By.CSS_SELECTOR, '.pinbox span')
     _pin_continue_button_locator = (By.CSS_SELECTOR, '.cta')
     _pin_heading_locator = (By.CSS_SELECTOR, 'section.content h1')
+    _cancel_pin_button_locator = (By.CSS_SELECTOR, '.button.cancel')
 
     # Final buy app panel
     _app_name_locator = (By.CSS_SELECTOR, '.product .title')
     _buy_button_locator = (By.XPATH, "//button[text()='Buy']")
     _cancel_button_locator = (By.XPATH, "//button[text()='Cancel']")
+    _confirm_payment_header_locator = (By.CSS_SELECTOR, 'main > h1')
+    _in_app_product_name_locator = (By.CSS_SELECTOR, '.title')
+    _in_app_confirm_buy_button_locator = (By.ID, 'uxBtnBuyNow')
 
     def __init__(self, marionette):
         Base.__init__(self, marionette)
@@ -37,6 +41,15 @@ class Payment(Base):
     @property
     def app_name(self):
         return self.marionette.find_element(*self._app_name_locator).text
+
+    @property
+    def in_app_product_name(self):
+        return self.marionette.find_element(*self._in_app_product_name_locator).text
+
+    @property
+    def confirm_payment_header_text(self):
+        self.wait_for_buy_app_section_displayed()
+        return self.marionette.find_element(*self._confirm_payment_header_locator).text
 
     @property
     def pin_heading(self):
@@ -55,6 +68,17 @@ class Payment(Base):
         self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
         self.tap_pin_continue()
 
+    def enter_pin(self, pin):
+        self.wait_for_element_displayed(*self._pin_container_locator)
+        Wait(marionette=self.marionette).until(lambda m: 'Enter PIN' in self.pin_heading)
+        self.marionette.find_element(*self._pin_container_locator).send_keys(pin)
+        self.tap_pin_continue()
+
+    def tap_cancel_pin(self):
+        self.wait_for_element_displayed(*self._cancel_pin_button_locator)
+        self.marionette.find_element(*self._cancel_pin_button_locator).tap()
+        self.apps.switch_to_displayed_app()
+
     def tap_pin_continue(self):
         button = self.marionette.find_element(*self._pin_continue_button_locator)
         Wait(marionette=self.marionette).until(lambda m: button.is_enabled())
@@ -68,7 +92,10 @@ class Payment(Base):
         self.wait_for_element_not_displayed(*self._loading_throbber_locator)
         payment_iframe = self.marionette.find_element(*self._payment_frame_locator)
         self.marionette.switch_to_frame(payment_iframe)
-        self.marionette.find_element(*self._buy_button_locator).tap()
+        if self.is_element_present(*self._buy_button_locator):
+            self.marionette.find_element(*self._buy_button_locator).tap()
+        else:
+            self.marionette.find_element(*self._in_app_confirm_buy_button_locator).tap()
         self.marionette.switch_to_frame()
         self.wait_for_element_not_present(*self._payment_frame_locator)
-        self.marionette.switch_to_frame()
+        self.apps.switch_to_displayed_app()

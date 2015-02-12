@@ -47,6 +47,7 @@ class TestSearchMarketplaceAndInstallApp(MarketplaceGaiaTestCase):
         self.assertEquals(first_result.install_button_text, 'Free', 'Incorrect button label.')
 
         first_result.tap_install_button()
+        self.wait_for_downloads_to_finish()
 
         # Confirm the installation and wait for the app icon to be present
         confirm_install = ConfirmInstall(self.marionette)
