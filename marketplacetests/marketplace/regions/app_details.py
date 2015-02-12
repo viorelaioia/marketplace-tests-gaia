@@ -45,13 +45,6 @@ class Details(Base):
             from marketplacetests.marketplace.regions.review_box import AddReview
             return AddReview(self.marionette)
 
-    def tap_purchase_button(self, is_logged_in=True):
+    def tap_install_button(self):
         self.wait_for_element_displayed(*self._install_button_locator)
         self.marionette.find_element(*self._install_button_locator).tap()
-
-        if is_logged_in:
-            # Return payment object
-            from marketplacetests.payment.app import Payment
-            return Payment(self.marionette)
-        from marketplacetests.firefox_accounts.app import FirefoxAccounts
-        return FirefoxAccounts(self.marionette)
